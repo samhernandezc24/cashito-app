@@ -1,0 +1,43 @@
+name: cashito_app
+description: "Cashito App"
+# The following line prevents the package from being accidentally published to
+# pub.dev using `flutter pub publish`. This is preferred for private packages.
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.6.1
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  cupertino_icons: ^1.0.8
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^5.0.0
+
+flutter:
+  uses-material-design: true
+
+  # To add assets to your application, add an assets section, like this:
+  # assets:
+  #   - images/a_dot_burr.jpeg
+  #   - images/a_dot_ham.jpeg
+
+  fonts:
+    - family: Font72
+      fonts:
+        - asset: assets/fonts/72-Light.ttf
+          weight: 200
+        - asset: assets/fonts/72-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/72-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/72-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/72-Black.ttf
+          weight: 800
