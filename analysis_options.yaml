@@ -16,3 +16,5 @@ linter:
     directives_ordering: true
 
     prefer_single_quotes: true
+
+    use_super_parameters: false
