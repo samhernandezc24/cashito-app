@@ -1,3 +1,5 @@
+import 'package:cashito_app/core/models/budget.dart';
+import 'package:cashito_app/ui/common/budget_container.dart';
 import 'package:cashito_app/ui/common/themed_text.dart';
 import 'package:flutter/material.dart';
 
@@ -20,7 +22,18 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             TextFont(text: 'test'),
-            Text('Hello, World!'),
+            BudgetContainer(
+              budget: Budget(
+                title: 'Budget Name',
+                startDate: DateTime.now(),
+                endDate: DateTime.now(),
+                period: 'month',
+                periodLength: 10,
+                color: Color(0x4F6ECA4A),
+                total: 500,
+                spent: 210,
+              ),
+            ),
           ],
         ),
       ),
