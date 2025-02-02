@@ -1,11 +1,11 @@
 import 'package:cashito_app/core/models/budget.dart';
 import 'package:cashito_app/core/models/transaction.dart';
 import 'package:cashito_app/ui/common/budget_container.dart';
+import 'package:cashito_app/ui/common/charts/pie_chart.dart';
 import 'package:cashito_app/ui/common/controls/fab.dart';
 import 'package:cashito_app/ui/common/themed_text.dart';
 import 'package:cashito_app/ui/common/transaction_entry.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -27,6 +27,15 @@ class _MyHomePageState extends State<MyHomePage> {
             delegate: SliverChildListDelegate(
               [
                 SizedBox(height: 100),
+                SizedBox(
+                  width: 200,
+                  height: 200,
+                  child: Stack(
+                    children: [
+                      PieChartSample3(),
+                    ],
+                  ),
+                ),
               ],
             ),
           ),
