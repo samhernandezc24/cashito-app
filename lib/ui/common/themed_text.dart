@@ -9,6 +9,7 @@ class TextFont extends StatelessWidget {
     this.fontWeight = FontWeight.normal,
     this.textAlign = TextAlign.left,
     this.textColor,
+    this.maxLines,
   }) : super(key: key);
 
   final String text;
@@ -16,6 +17,7 @@ class TextFont extends StatelessWidget {
   final FontWeight fontWeight;
   final Color? textColor;
   final TextAlign textAlign;
+  final int? maxLines;
 
   @override
   Widget build(BuildContext context) {
@@ -29,6 +31,7 @@ class TextFont extends StatelessWidget {
 
     return Text(
       text,
+      maxLines: maxLines,
       textAlign: textAlign,
       style: TextStyle(
         fontWeight: fontWeight,

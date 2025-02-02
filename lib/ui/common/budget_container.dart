@@ -12,7 +12,7 @@ class BudgetContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Widget? widget = Column(
+    var widget = Column(
       children: [
         SizedBox(
           width: double.infinity,
@@ -34,7 +34,7 @@ class BudgetContainer extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(bottom: 3.0),
               child: TextFont(
-                text: ' left of ${Globals.convertToMoney(budget.total)}',
+                text: ' restantes de ${Globals.convertToMoney(budget.total)}',
                 fontSize: 13,
               ),
             ),
@@ -46,7 +46,7 @@ class BudgetContainer extends StatelessWidget {
           child: FittedBox(
             fit: BoxFit.fitWidth,
             child: TextFont(
-              text: 'You can keep spending 15\$ each day.',
+              text: 'Puedes seguir gastando 15\$ cada día.',
               fontSize: 15,
               textAlign: TextAlign.center,
             ),
@@ -159,9 +159,9 @@ class BudgetProgress extends StatelessWidget {
       height: 22,
       child: Center(
         child: Padding(
-          padding: const EdgeInsets.only(top: 4.3),
+          padding: const EdgeInsets.only(top: 1.2),
           child: TextFont(
-            text: '${percent.toInt()}%',
+            text: '${percent.toInt().toString()}%',
             fontSize: 14,
             textAlign: TextAlign.center,
             fontWeight: FontWeight.bold,
@@ -181,26 +181,37 @@ class BudgetProgress extends StatelessWidget {
           margin: EdgeInsets.symmetric(horizontal: 8),
           height: 20,
         ),
+        Container(
+          margin: EdgeInsets.symmetric(horizontal: 8),
+          height: 20,
+          child: FractionallySizedBox(
+            heightFactor: 1,
+            widthFactor: percent / 100,
+            child: Stack(
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(6),
+                    color: Colors.red,
+                  ),
+                ),
+                Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(6),
+                    color: Colors.white.withValues(alpha: 0.8),
+                  ),
+                ),
+                percent > 40 ? percentText : Container(),
+              ],
+            ),
+          ),
+        ),
         FadeIn(
           child: TodayIndicator(
             percent: todayPercent,
           ),
         ),
         percent <= 40 ? percentText : Container(),
-        // FractionallySizedBox(
-        //   heightFactor: 1,
-        //   widthFactor: percent / 100,
-        //   child: Stack(
-        //     children: [
-        //       Container(
-        //         decoration: BoxDecoration(
-        //           borderRadius: BorderRadius.circular(6),
-        //           color: Colors.red,
-        //         ),
-        //       ),
-        //     ],
-        //   ),
-        // ),
       ],
     );
   }
@@ -233,7 +244,7 @@ class TodayIndicator extends StatelessWidget {
                     padding: EdgeInsets.only(top: 4, right: 5, left: 5, bottom: 3),
                     child: TextFont(
                       textAlign: TextAlign.center,
-                      text: 'Today',
+                      text: 'Hoy',
                       fontSize: 9,
                       textColor: Theme.of(context).colorScheme.white,
                     ),

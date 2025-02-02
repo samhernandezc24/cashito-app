@@ -1,3 +1,5 @@
+import 'package:cashito_app/core/models/transaction_category.dart';
+import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class Globals {
@@ -18,5 +20,14 @@ class Globals {
     }
 
     return currencyType + currency.format(amount);
+  }
+
+  static TransactionCategory findCategory(String id) {
+    return TransactionCategory(
+      id: 'id',
+      title: 'Food and Drink',
+      icon: 'cutlery.png',
+      color: Colors.orange,
+    );
   }
 }

@@ -11,7 +11,6 @@ class Budget {
     required this.total,
     required this.spent,
   });
-
   final String title;
   final DateTime startDate;
   final DateTime endDate;
