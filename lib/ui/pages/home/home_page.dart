@@ -1,5 +1,6 @@
 import 'package:cashito_app/core/models/budget.dart';
 import 'package:cashito_app/core/models/transaction.dart';
+import 'package:cashito_app/styles/app_colors.dart';
 import 'package:cashito_app/ui/common/budget_container.dart';
 import 'package:cashito_app/ui/common/charts/pie_chart.dart';
 import 'package:cashito_app/ui/common/controls/button.dart';
@@ -20,93 +21,86 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final scrollController = ScrollController();
+  final GlobalKey<_HomeAppBarState> _appBarKey = GlobalKey();
+  double setTitleHeight = 0;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: CustomScrollView(
-        controller: scrollController,
         slivers: [
-          SliverList(
-            delegate: SliverChildListDelegate(
-              [
-                SizedBox(height: 100),
-                Button(
-                  label: 'button',
-                  width: 120,
-                  height: 40,
-                  onTap: () {},
-                ),
-                SizedBox(height: 100),
-                SizedBox(
-                  width: 200,
-                  height: 200,
-                  child: Stack(
-                    children: [
-                      PieChartSample3(),
-                      IgnorePointer(
-                        child: Center(
-                          child: Container(
-                            width: 90,
-                            height: 90,
-                            decoration: BoxDecoration(
-                              color: Colors.black,
-                              shape: BoxShape.circle,
-                            ),
-                          ),
-                        ),
-                      ),
-                      IgnorePointer(
-                        child: Center(
-                          child: Container(
-                            width: 115,
-                            height: 115,
-                            decoration: BoxDecoration(
-                              color: Colors.black.withValues(alpha: 0.2),
-                              shape: BoxShape.circle,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(height: 100),
-                TextInput(labelText: 'labelText'),
-              ],
+          SliverAppBar(
+            leading: Container(),
+            backgroundColor: Theme.of(context).colorScheme.accentColor,
+            pinned: true,
+            expandedHeight: 200.0,
+            collapsedHeight: 65,
+            flexibleSpace: FlexibleSpaceBar(
+              titlePadding: EdgeInsets.symmetric(vertical: 15, horizontal: 18),
+              title: HomeAppBar(key: _appBarKey, defaultTitle: 'Inicio'),
+              background: Container(color: Theme.of(context).canvasColor),
             ),
           ),
-          SliverStickyHeader(
-            header: TextHeader(text: 'Inicio'),
-            sliver: SliverPadding(
-              padding: EdgeInsets.symmetric(),
-              sliver: SliverList(
-                delegate: SliverChildListDelegate(
-                  [
-                    BudgetContainer(
-                      budget: Budget(
-                        title: 'Nombre del Presupuesto',
-                        startDate: DateTime.now(),
-                        endDate: DateTime.now(),
-                        period: 'month',
-                        periodLength: 10,
-                        color: Color(0x4F6ECA4A),
-                        total: 500,
-                        spent: 210,
-                      ),
+          SliverPadding(
+            padding: EdgeInsets.symmetric(vertical: 10),
+            sliver: SliverList(
+              delegate: SliverChildListDelegate(
+                [
+                  BudgetContainer(
+                    budget: Budget(
+                      title: 'Nombre del Presupuesto',
+                      startDate: DateTime.now(),
+                      endDate: DateTime.now(),
+                      period: 'month',
+                      periodLength: 10,
+                      color: Color(0x4F6ECA4A),
+                      total: 500,
+                      spent: 210,
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
           ),
+          SliverAppBar(
+            leading: Container(),
+            backgroundColor: Colors.transparent,
+            expandedHeight: 65.1,
+            collapsedHeight: 65,
+            flexibleSpace: LayoutBuilder(
+              builder: (BuildContext context, BoxConstraints constraints) {
+                if (setTitleHeight == 0) {
+                  setTitleHeight = constraints.biggest.height;
+                }
 
+                print(setTitleHeight);
+
+                if (constraints.biggest.height < setTitleHeight) {
+                  // ocurre cuando el título desaparece (desplazamiento hacia abajo)
+                  // agregar un retardo para esperar a la disposición de los widgets hijos primero
+                  Future.delayed(Duration.zero, () async {
+                    _appBarKey.currentState?.changedTitle('Transacciones', 1);
+                  });
+                } else {
+                  // ocurre cuando aparece el título (desplazamiento hacia arriba)
+                  Future.delayed(Duration.zero, () async {
+                    _appBarKey.currentState?.changedTitle('Inicio', -1);
+                  });
+                }
+                return FlexibleSpaceBar(
+                  titlePadding: EdgeInsets.symmetric(vertical: 15, horizontal: 18),
+                  title: TextFont(
+                    text: 'Transacciones',
+                    fontWeight: FontWeight.bold,
+                  ),
+                );
+              }
+            ),
+          ),
           SliverStickyHeader(
             header: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                TextHeader(text: 'Transacciones'),
                 DateDivider(date: DateTime.now()),
               ],
             ),
@@ -161,6 +155,68 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class HomeAppBar extends StatefulWidget {
+  const HomeAppBar({Key? key, required this.defaultTitle}) : super(key: key);
+
+  final String defaultTitle;
+
+  @override
+  State<HomeAppBar> createState() => _HomeAppBarState();
+}
+
+class _HomeAppBarState extends State<HomeAppBar> {
+  late String title = '';
+  late int direction = -1;
+
+  @override
+  void initState() {
+    super.initState();
+    title = widget.defaultTitle;
+  }
+
+  void changedTitle(newTitle, newDirection) {
+    setState(() {
+      title = newTitle;
+      direction = newDirection;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedSwitcher(
+      duration: Duration(milliseconds: 500),
+      switchInCurve: Curves.easeInOutCubic,
+      switchOutCurve: Curves.easeInOutCubic,
+      transitionBuilder: (Widget child, Animation<double> animation) {
+        final inAnimation = Tween<Offset>(
+          begin: Offset(0.0, direction == -1 ? -1 : 1),
+          end: Offset(0.0, 0.0),
+        ).animate(animation);
+        final outAnimation = Tween<Offset>(
+          begin: Offset(0.0, direction == -1 ? 1 : -1),
+          end: Offset(0.0, 0.0),
+        ).animate(animation);
+
+        return ClipRect(
+          child: SlideTransition(
+            position: child.key == ValueKey(title) ? inAnimation : outAnimation,
+            child: child,
+          ),
+        );
+      },
+      child: SizedBox(
+        width: MediaQuery.of(context).size.width,
+        key: ValueKey(title),
+        child: TextFont(
+          text: title,
+          fontSize: 26,
+          fontWeight: FontWeight.bold,
+        ),
       ),
     );
   }
