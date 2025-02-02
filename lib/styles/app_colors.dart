@@ -26,6 +26,13 @@ extension ColorsDefined on ColorScheme {
   Color get shadowColorLight => brightness == Brightness.light
       ? const Color(0x2D5A5A5A)
       : const Color(0x4BBDBDBD);
+
+  Color get accentColor => brightness == Brightness.light
+      ? const Color(0xFF46A872)
+      : const Color(0xFF1E7A1B);
+  Color get accentColorHeavy => brightness == Brightness.light
+      ? const Color(0xFF1C683E)
+      : const Color(0xFF7CFF77);
 }
 
 Color darken(Color color, [double amount = .1]) {

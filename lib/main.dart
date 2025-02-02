@@ -14,7 +14,16 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        fontFamily: 'Font72',
+        brightness: Brightness.light,
+        canvasColor: Colors.grey[100],
+        appBarTheme: AppBarTheme(),
+      ),
+      darkTheme: ThemeData(
+        fontFamily: 'Font72',
+        brightness: Brightness.dark,
+        canvasColor: Colors.black,
+        appBarTheme: AppBarTheme(),
       ),
       home: Scaffold(
         body: MyHomePage(title: 'Cashito App'),
